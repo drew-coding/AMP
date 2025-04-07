@@ -1,0 +1,95 @@
+activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <Button
+        android:id="@+id/btnSendData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Data"
+        tools:ignore="HardcodedText" />
+
+</LinearLayout>
+
+
+Mainactivity.kt
+
+package com.example.intentactivity
+
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import com.example.intentactivity.R
+
+class MainActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        // Button to trigger passing data
+        val btnSendData = findViewById<Button>(R.id.btnSendData)
+
+        btnSendData.setOnClickListener {
+            // Create an Intent to start SecondActivity
+            val intent = Intent(this, SecondActivity::class.java)
+
+            // Pass data using the Intent's putExtra method
+            intent.putExtra("KEY_NAME", "Hello from MainActivity!")
+
+            // Start the SecondActivity
+            startActivity(intent)
+        }
+    }
+}
+
+
+activity_second.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/received_data_will_appear_here" />
+
+</LinearLayout>
+
+
+SecondActivity.kt
+
+package com.example.intentactivity
+
+import android.os.Bundle
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+
+class SecondActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_second)
+
+        // Get the TextView where the data will be displayed
+        val textView = findViewById<TextView>(R.id.textView)
+
+        // Retrieve the data from the Intent
+        val receivedData = intent.getStringExtra("KEY_NAME")
+
+        // Set the data to the TextView
+        textView.text = receivedData
+    }
+}
