@@ -1,0 +1,95 @@
+main_menu.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_main"
+        android:title="Main Menu">
+
+        <menu>
+            <item
+                android:id="@+id/sub_item1"
+                android:title="Sub Item 1" />
+            <item
+                android:id="@+id/sub_item2"
+                android:title="Sub Item 2" />
+            <item
+                android:id="@+id/sub_item3"
+                android:title="Sub Item 3" />
+        </menu>
+
+    </item>
+
+</menu>
+
+
+activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/myToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:title="Submenu Demo"
+        app:titleTextColor="@android:color/white" />
+
+    <TextView
+        android:text="Click menu (3-dot) to see Submenu"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>
+
+
+Mainactivity.kt
+
+package com.example.submenudemo
+
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+
+class MainActivity : AppCompatActivity() {
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+    }
+
+    // Inflate the menu
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    // Handle menu item clicks
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.sub_item1 -> {
+                Toast.makeText(this, "Sub Item 1 Selected", Toast.LENGTH_SHORT).show()
+                return true
+            }
+            R.id.sub_item2 -> {
+                Toast.makeText(this, "Sub Item 2 Selected", Toast.LENGTH_SHORT).show()
+                return true
+            }
+            R.id.sub_item3 -> {
+                Toast.makeText(this, "Sub Item 3 Selected", Toast.LENGTH_SHORT).show()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+}
+
