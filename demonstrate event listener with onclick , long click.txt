@@ -1,0 +1,106 @@
+add this in gradle inside android {}
+
+buildFeatures {
+        viewBinding = true
+    }
+
+
+activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btnClick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Click or Long Click Me" />
+
+    <ImageView
+        android:id="@+id/imgTouch"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_launcher_foreground"
+        android:contentDescription="Touch Image"
+        android:background="#D3D3D3" />
+
+    <EditText
+        android:id="@+id/edtInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Type something and press Enter"
+        android:minHeight="48dp" />
+
+    <TextView
+        android:id="@+id/txtMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Messages will appear here"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        android:paddingTop="16dp" />
+</LinearLayout>
+
+
+MainActivity.kt
+
+package com.example.myapplication
+
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.KeyEvent
+import android.view.MotionEvent
+import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.databinding.ActivityMainBinding
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+
+    @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // Button click listener
+        binding.btnClick.setOnClickListener {
+            binding.txtMessage.text = "Button Clicked!"
+        }
+
+        // Button long click listener
+        binding.btnClick.setOnLongClickListener {
+            binding.txtMessage.text = "Button Long Clicked!"
+            true
+        }
+
+        // ImageView touch listener
+        binding.imgTouch.setOnTouchListener { _, event ->
+            when (event.actionMasked) {
+                MotionEvent.ACTION_DOWN -> binding.txtMessage.text = "Image Touched - ACTION_DOWN"
+                MotionEvent.ACTION_UP -> binding.txtMessage.text = "Image Released - ACTION_UP"
+                MotionEvent.ACTION_POINTER_DOWN -> binding.txtMessage.text = "Multi-touch Detected - ACTION_POINTER_DOWN"
+            }
+            true
+        }
+
+        // EditText key listener for Enter key
+        binding.edtInput.setOnKeyListener { _, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+                binding.txtMessage.text = "Enter Key Pressed in EditText: ${binding.edtInput.text}"
+                true
+            } else {
+                false
+            }
+        }
+    }
+}
